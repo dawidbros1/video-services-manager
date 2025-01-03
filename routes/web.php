@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\YouTubeController;
+use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,5 +27,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/groups/delete', [GroupController::class, 'delete'])->name('groups.delete');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/google', [GoogleController::class, 'index'])->name('google');
+    Route::get('/google/authorization', [GoogleController::class, 'authorization'])->name('google.auth');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/youtube', [YouTubeController::class, 'index'])->name('youtube');
+});
 
 require __DIR__.'/auth.php';

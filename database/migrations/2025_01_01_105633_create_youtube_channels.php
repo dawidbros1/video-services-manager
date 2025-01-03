@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->text('description');
             $table->string('thumb', 255);
-            $table->string('external_channel_id', 255);
+            $table->string('channelId', 255);
             $table->timestamps();
         });
     }

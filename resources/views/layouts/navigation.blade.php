@@ -19,6 +19,10 @@
                     <x-nav-link :href="route('groups')" :active="request()->routeIs('groups')">
                         {{ __('Grupy') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('youtube')" :active="request()->routeIs('youtube')">
+                        {{ __('YouTube') }}
+                    </x-nav-link>
                 </div>
             </div>
 
