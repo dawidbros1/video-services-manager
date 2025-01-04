@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Rest;
+namespace App\Google\Youtube;
 
-class Youtube
+class Rest
 {
     private $service;
 

@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model;
+namespace App\Google\Model;
 
-// use Phantom\Repository\DBFinder;
-
-class User
+class Youtube
 {
     private $id;
     private $username;
@@ -16,7 +14,6 @@ class User
     {
         $this->id = $youtube->id;
         $this->username = $youtube->snippet->title;
-        // $this->categories = (DBFinder::getInstance('categories'))->findAll(['user' => $this->id], Category::class);
         $this->categories = [];
     }
 

@@ -2,32 +2,41 @@
 
 declare (strict_types = 1);
 
-namespace App\Service;
+namespace App\Google\Service;
 
-use App\Model\User;
+use App\Google\Model\GoogleUser;
 use App\Helper\Session;
-use App\Service\GoogleClient;
-use App\Rest\YouTube;
+use App\Google\Service\GoogleClient;
+use App\Google\YouTube\Rest as YoutubeRest;
 
 class Google
 {
     private $client;
     private $url;
-    private $youtube;
+    private $youtube_rest;
 
     public function __construct(string $project_location)
     {
+        # Ustawia lokalizację projektu dla autoryzacji konta
         $this->url = $project_location;
+
+        # Zwraca usługę z ustawionymi uprawnieniami i konfiguracją
+        # Ustawia uprawnienia do youtube.com
         $this->client = (new GoogleClient())->get();
-        $this->youtube = (new Youtube($this->client));
+
+        # Tworzy rest do odpytywania o dane z API
+        $this->youtube_rest = (new YoutubeRest($this->client));
     }
-    # Method sign in user
+
+    # Zwraca użytkownika Youtube
     public function login()
     {
         if ($access_token = Session::get('access_token')) {
             $this->validateAccessToken($access_token);
 
-            return new User($this->youtube->getMyChannel());
+            return 1;
+
+            // return new User($this->youtube->getMyChannel());
         }
 
         return null;
@@ -55,7 +64,7 @@ class Google
     # Method return YoutubeService
     public function getYoutubeService()
     {
-        return $this->youtube;
+        return $this->youtube_rest;
     }
 
     # Method checks if token is set and valid

@@ -5,9 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto mt-10 pb-">
-        <h2 class="text-3xl font-bold text-gray-800 mb-6">Lista Kanałów YouTube</h2>
-
+    <div class="max-w-7xl mx-auto mt-10 pb-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($subscriptions as $channel)
                 <div class="bg-white shadow-lg rounded-lg p-4">

@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Google\Service;
 
 use App\Models\Youtube\Channel;
 
-class YouTubeService
+class YoutubeService
 {
     public static $api = null;
 
-    public static function getSubscriptions()
+    # Zwraca listę kanałow subskrybentów
+    # Zapisuje je do bazy danych
+    public static function getSubscriberChannels()
     {
         if (null == self::$api) {
             return [];

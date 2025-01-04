@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Service\YouTubeService;
+use App\Google\Service\YoutubeService;
 
 class YouTubeController extends Controller
 {
@@ -15,7 +15,7 @@ class YouTubeController extends Controller
     {
        parent::__construct($request);
 
-       YouTubeService::$api = $this->google->getYoutubeService();
+       YoutubeService::$api = $this->google->getYoutubeService();
     }
 
     public function index(Request $request)
@@ -25,7 +25,7 @@ class YouTubeController extends Controller
         }
 
         return view('youtube.list', [
-            'subscriptions' => YouTubeService::getSubscriptions()
+            'subscriptions' => YoutubeService::getSubscriberChannels()
         ]);
     }
 
