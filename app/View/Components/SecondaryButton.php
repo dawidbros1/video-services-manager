@@ -7,13 +7,8 @@ use Illuminate\View\View;
 
 class SecondaryButton extends Component
 {
-    public function __construct(
-        public ?string $id,
-    ) {}
+    public function __construct() {}
 
-    /**
-     * Get the view / contents that represents the component.
-     */
     public function render(): View
     {
         return view('components.secondary-button');
