@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Google\Model;
 
-class Youtube
+class User
 {
     private $id;
     private $username;

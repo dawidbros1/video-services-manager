@@ -43,4 +43,17 @@ class YoutubeService
 
         return Channel::where('user_id', auth()->id())->get();
     }
+
+    # Method returns videos form channels
+    public static function getVideos(array $channels)
+    {
+        $videos = [];
+
+        foreach ($channels as $channel) {
+            $result = self::$api->getChannelVideos($channel);
+            $videos = array_merge($videos, $result->items);
+        }
+
+        return $videos;
+    }
 }

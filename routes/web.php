@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GroupController;
-use App\Http\Controllers\YouTubeController;
+use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/youtube', [YouTubeController::class, 'index'])->name('youtube');
+    Route::get('/youtube', [YoutubeController::class, 'index'])->name('youtube');
+    Route::get('/youtube/videos/{channelId}', [YoutubeController::class, 'videos'])->name('youtube.videos');
 });
 
 require __DIR__.'/auth.php';

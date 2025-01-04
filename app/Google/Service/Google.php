@@ -4,7 +4,7 @@ declare (strict_types = 1);
 
 namespace App\Google\Service;
 
-use App\Google\Model\GoogleUser;
+use App\Google\Model\User;
 use App\Helper\Session;
 use App\Google\Service\GoogleClient;
 use App\Google\YouTube\Rest as YoutubeRest;

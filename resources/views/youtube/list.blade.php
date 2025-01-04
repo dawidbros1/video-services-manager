@@ -32,6 +32,11 @@
                             class="inline-block px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition">
                             Otwórz kanał
                         </a>
+
+                        <a href="{{ route('youtube.videos', ['channelId' => $channel->channelId]) }}" href="https://www.youtube.com/channel/{{ $channel->channelId }}" target="_blank"
+                            class="inline-block px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition">
+                            Zobacz filmy
+                        </a>
                     </div>
                 </div>
             @endforeach

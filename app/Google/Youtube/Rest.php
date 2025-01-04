@@ -57,22 +57,13 @@ class Rest
     }
 
     # Method returns videos form channels
-    public function listVideos(array $channels)
+    public function getChannelVideos(string $channelId)
     {
-        $videos = [];
-
-        foreach ($channels as $channel) {
-            $result = $this->service->search->listSearch('snippet', [
-                'channelId' => $channel->getChannelId(),
-                'maxResults' => 50,
-                // get last 50 videos per canal
-                'order' => 'date',
-                'type' => "video",
-            ]);
-
-            $videos = array_merge($videos, $result->items);
-        }
-
-        return $videos;
+        return $this->service->search->listSearch('snippet', [
+            'channelId' => $channelId,
+            'maxResults' => 50,
+            'order' => 'date',
+            'type' => "video",
+        ]);
     }
 }
