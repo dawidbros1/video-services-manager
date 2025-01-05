@@ -50,4 +50,23 @@ class User extends Authenticatable
     public function groups(): HasMany {
         return $this->hasMany(Group::class, 'user_id');
     }
+
+    public function getYoutubeData($channelId, $type = "channels")
+    {
+        $youtube_data = json_decode($this->youtube_data, true) ?? [];
+
+        return $youtube_data[$channelId][$type]['items'] ?? [];
+    }
+
+    public function setYoutubeData($channelId, $data = null, $type = "channels")
+    {
+        $youtube_data = json_decode($this->youtube_data, true) ?? [];
+        $youtube_data[$channelId][$type] = [
+            'items' => $data,
+            'refresh_at' => date('Y-m-d H:i:s')
+        ];
+
+        $this->youtube_data = json_encode($youtube_data);
+        $this->save();
+    }
 }

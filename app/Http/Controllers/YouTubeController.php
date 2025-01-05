@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Google\Service\YoutubeService;
-use App\Models\Youtube\Channel;
+use App\Google\Youtube\Models\Channel;
 
 class YouTubeController extends Controller
 {
@@ -21,12 +21,13 @@ class YouTubeController extends Controller
 
     public function index(Request $request)
     {
-        if (null == $this->user) {
+        if (null == $this->youtube_user) {
             return redirect()->route('google');
         }
 
+    
         return view('youtube.list', [
-            'subscriptions' => YoutubeService::getSubscriberChannels(),
+            'subscriptions' => YoutubeService::getSubscriberChannels($this->youtube_user->getId()),
         ]);
     }
 
@@ -34,7 +35,7 @@ class YouTubeController extends Controller
     {
         return view('youtube.videos', [
             'channel' => Channel::where('channelId', $channelId)->firstOrFail(),
-            'videos' => YoutubeService::getVideos([$channelId]),
+            'videos' => YoutubeService::getVideos($channelId),
         ]);
     }
 

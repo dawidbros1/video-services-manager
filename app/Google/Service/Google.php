@@ -4,7 +4,7 @@ declare (strict_types = 1);
 
 namespace App\Google\Service;
 
-use App\Google\Model\User;
+use App\Google\Models\User;
 use App\Helper\Session;
 use App\Google\Service\GoogleClient;
 use App\Google\YouTube\Rest as YoutubeRest;
@@ -34,9 +34,7 @@ class Google
         if ($access_token = Session::get('access_token')) {
             $this->validateAccessToken($access_token);
 
-            return 1;
-
-            // return new User($this->youtube->getMyChannel());
+            return new User($this->youtube_rest->getMyChannel());
         }
 
         return null;

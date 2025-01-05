@@ -8,13 +8,13 @@ use App\Helper\Session;
 abstract class Controller
 {
     protected $google;
-    protected $user = null;
+    protected $youtube_user = null;
   
     public function __construct() {
         # Inicjalizacja konta Google
         $this->google = new Google(env('PROJECT_LOCATION'));
 
         # Logowanie konta Google do Youtube
-        $this->user = $this->google->login();
+        $this->youtube_user = $this->google->login();
     }
 }
