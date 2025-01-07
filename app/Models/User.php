@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -54,6 +55,17 @@ class User extends Authenticatable
     public function getYoutubeData($channelId, $type = "channels")
     {
         $youtube_data = json_decode($this->youtube_data, true) ?? [];
+
+        $type_data = $youtube_data[$channelId][$type];
+
+        if (null !== $type_data['refresh_at']) {
+            $refreshAt = Carbon::parse($type_data['refresh_at']); 
+            $now = Carbon::now();
+        
+            if ($refreshAt->diffInMinutes($now) >= 15) {
+                return [];
+            }
+        }
 
         return $youtube_data[$channelId][$type]['items'] ?? [];
     }

@@ -16,5 +16,6 @@ class Channel extends Model
         'thumb',
         'description',
         'channelId',
+        'refresh_at'
     ];
 }

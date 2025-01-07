@@ -27,14 +27,14 @@ class YoutubeService
         if (empty($channels_ids)) {
             do {
                 $subscriptions = self::$api->listSubscriptions($pageToken);
-    
+
                 foreach ($subscriptions->items as $item) {
                     $channels_ids[] = $item->snippet->resourceId->channelId;
 
                     if (YoutubeChannel::where('channelId', $item->snippet->resourceId->channelId)->exists()) {
                         continue;
                     }
-    
+
                     YoutubeChannel::create([
                         'name' => $item->snippet->title,
                         'thumb' => $item->snippet->thumbnails->default->url,
@@ -42,7 +42,7 @@ class YoutubeService
                         'channelId' => $item->snippet->resourceId->channelId,
                     ]);
                 }
-    
+
                 $pageToken = $subscriptions->nextPageToken;
             } while ($pageToken != null);
 
@@ -59,20 +59,32 @@ class YoutubeService
         if (!is_array($channels)) {
             $channels = [$channels];
         }
-    
-        // Tablica na wszystkie nowe filmy
-        $videosToSave = [];
-    
+
         foreach ($channels as $channelId) {
-            // Sprawdź, czy w bazie istnieje już wideo z tego kanału
-            if (YoutubeVideo::where('channelId', $channelId)->exists()) {
-                continue;
+            $channel = YoutubeChannel::where('channelId', $channelId)->first();
+
+            if ($channel && isset($channel->refresh_at)) {
+                // Sprawdź, czy minęło 15 minut od ostatniego odświeżenia
+                $refreshAt = Carbon::parse($channel->refresh_at);
+                $now = Carbon::now();
+
+                if ($refreshAt->diffInMinutes($now) < 15) {
+                    // Jeśli nie minęło 15 minut, przejdź do następnego kanału
+                    continue;
+                }
             }
-    
+
             // Pobierz filmy z API dla danego kanału
             $videos = self::$api->getChannelVideos($channelId)->items;
-    
+            $videosToSave = [];
+
             foreach ($videos as $video) {
+                // Sprawdź, czy film o danym videoId już istnieje w bazie
+                if (YoutubeVideo::where('videoId', $video->id->videoId)->exists()) {
+                    // Jeśli film istnieje, pomiń go
+                    continue;
+                }
+
                 // Dodaj wideo do tablicy nowych filmów
                 $videosToSave[] = [
                     'title' => $video->snippet->title,
@@ -83,16 +95,16 @@ class YoutubeService
                     'publishedAt' => Carbon::parse($video->snippet->publishedAt)->format('Y-m-d H:i:s'),
                 ];
             }
+
+            $channel->update(['refresh_at' => Carbon::now()]);
         }
-    
+
         // Zapisz wszystkie nowe filmy za jednym razem
         if (!empty($videosToSave)) {
             YoutubeVideo::insert($videosToSave);
         }
-    
+
         // Zwróć filmy z podanych kanałów
-        return YoutubeVideo::whereIn('channelId', $channels)
-            ->orderBy('publishedAt', 'desc')
-            ->get();
+        return YoutubeVideo::whereIn('channelId', $channels)->orderBy('publishedAt', 'desc')->get();
     }
 }
