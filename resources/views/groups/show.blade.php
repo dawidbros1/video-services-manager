@@ -18,7 +18,17 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto mt-10 pb-4">
-        Filmy
+        <x-groups.header
+            name="{{ $group->name }}"
+            description="TODO OPIS"
+            thumb="{{ $group->getThumb() }}"
+        />
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            @foreach ($videos as $video)
+                <x-youtube.video :details="$video"/>
+            @endforeach
+        </div>
     </div>
 
     <script>

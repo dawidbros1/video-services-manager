@@ -6,6 +6,12 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto mt-10 pb-4">
+        <x-groups.header
+            name="{{ $group->name }}"
+            description="TODO OPIS"
+            thumb="{{ $group->getThumb() }}"
+        />
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($channels as $channel)
                 <x-youtube.channel :details="$channel">

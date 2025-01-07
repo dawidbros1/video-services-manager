@@ -52,7 +52,6 @@ class YoutubeService
         return YoutubeChannel::whereIn('channelId', $channels_ids)->get();
     }
 
-    # Method returns videos form channels
     public static function getVideos($channels)
     {
         // Upewnij się, że $channels jest tablicą

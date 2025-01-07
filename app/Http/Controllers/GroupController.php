@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Group;
+use App\Models\GroupChannel;
+use App\Google\Youtube\Models\Channel as YoutubeChannel;
+use App\Google\Youtube\Models\Video as YoutubeVideo;
+use App\Google\Service\YoutubeService;
 
 class GroupController extends Controller
 {
@@ -37,12 +41,36 @@ class GroupController extends Controller
         return redirect()->back()->with('success', 'Grupa została utworzona.');
     }
 
-    public function show(int $id) 
+    public function show($id) 
     {
+        YoutubeService::$api = $this->google->getYoutubeService();
+
         $group = Group::findOrFail($id);
+
+        $groupChannels = GroupChannel::where('user_id', auth()->user()->id)
+            ->where('channelId', $this->youtube_user->getId())
+            ->where('group_id', $group->id)
+            ->get();
+   
+        $youtube_channel_ids = [];
+
+        foreach ($groupChannels as $groupChannel) {
+            $youtube_channel_ids[] = $groupChannel->youtube_channel_id;
+        }
+
+        $channels = YoutubeChannel::whereIn('id', $youtube_channel_ids)->get();
+
+        $channelIds = [];
+
+        foreach($channels as $channel) {
+            $channelIds[] = $channel->channelId;
+        }
+
+        $videos = YoutubeService::getVideos($channelIds);
 
         return view('groups.show', [
             'group' => $group,
+            'videos' => $videos
         ]);
     }
 
