@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('youtube_data')->nullable(true)->default(null);
+        Schema::table('youtube_channels', function (Blueprint $table) {
+            $table->string('channelId', 24)->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('youtube_data');
+        Schema::table('youtube_channels', function (Blueprint $table) {
+            $table->string('channelId', 255)->change();
         });
     }
 };

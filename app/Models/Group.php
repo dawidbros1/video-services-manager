@@ -11,4 +11,14 @@ class Group extends Model
         'thumb',
         'user_id',
     ];
+
+    public $group_channel_id = null;
+
+    public function getThumb() {
+        if (!empty($this->thumb)) {
+            return $this->thumb;
+        }
+
+        return asset('images/image.png');
+    }
 }

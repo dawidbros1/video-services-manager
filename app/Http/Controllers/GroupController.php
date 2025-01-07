@@ -37,6 +37,15 @@ class GroupController extends Controller
         return redirect()->back()->with('success', 'Grupa została utworzona.');
     }
 
+    public function show(int $id) 
+    {
+        $group = Group::findOrFail($id);
+
+        return view('groups.show', [
+            'group' => $group,
+        ]);
+    }
+
     public function update(Request $request)
     {
         // Walidacja danych wejściowych

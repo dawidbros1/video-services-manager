@@ -17,10 +17,16 @@
                 <div class="mt-2">
                     <div class="flex flex-wrap">
                         @foreach ($groups as $group)
-                            <div class="w-1/3 p-2 group" data-id="{{ $group->id }}" data-name="{{ $group->name }}" data-thumb="{{ $group->thumb }}">
+                            <div 
+                                class="w-1/3 p-2 group" 
+                                data-id="{{ $group->id }}" 
+                                data-name="{{ $group->name }}" 
+                                data-thumb="{{ $group->thumb }}"
+                                data-show="{{ route('groups.show', ['id' => $group->id]) }}"
+                                >
                                 <div class="flex p-2" style="border: 1px solid black">
-                                    <img class="pr-2 h-8" src="{{ $group->thumb }}" />
-                                    <p class="mt-1" style="width: 75%">{{ $group->name }}</p>
+                                    <img class="pr-2 h-8" src="{{ $group->getThumb() }}" />
+                                    <p class = "group-name" class="mt-1" style="width: 75%"><span class="cursor-pointer">{{ $group->name }}</span></p>
 
                                     <div class="mr-2 flex mt-1 p-1" style="border: 1px solid black;">
                                         <img class="icon mr-1 pr-1 open_group_form" 
@@ -134,6 +140,15 @@
             $('.delete_group').on('click', function() {
                 $(this).parent('form').find('button').click();
             });
+
+            $('.group').each(function() {
+                const url = $(this).data('show');
+
+                $(this).find('.group-name span').on('click', function() {
+                    window.location.href = url;
+                })
+            });
+
         });
     </script>
 </x-app-layout>

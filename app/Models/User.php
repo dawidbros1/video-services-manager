@@ -56,6 +56,13 @@ class User extends Authenticatable
     {
         $youtube_data = json_decode($this->youtube_data, true) ?? [];
 
+        if (!array_key_exists($channelId, $youtube_data)) {
+            $youtube_data[$channelId][$type] = [
+                'items' => [],
+                'refresh_at' => null,
+            ];
+        }
+
         $type_data = $youtube_data[$channelId][$type];
 
         if (null !== $type_data['refresh_at']) {
@@ -73,6 +80,7 @@ class User extends Authenticatable
     public function setYoutubeData($channelId, $data = null, $type = "channels")
     {
         $youtube_data = json_decode($this->youtube_data, true) ?? [];
+
         $youtube_data[$channelId][$type] = [
             'items' => $data,
             'refresh_at' => date('Y-m-d H:i:s')
